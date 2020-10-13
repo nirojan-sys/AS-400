@@ -298,7 +298,7 @@ case 2:// o stands for option..
                             ch=fgetc(view_ac);
                             printf("%c",ch);
                       }
-            ch='o';   /*this ch is assigned temporarily to some random character,so that ch does not contain the value of EOF,  if not declared like this the loop works only once, for the second time breaks
+            ch='o';   /*this ch is assigned temporarily to some random character,so that ch does not contain the value of EOF(end of file),  if not declared like this the loop works only once, for the second time breaks
 			             automatically,because the value of ch would be EOF from the first loop,if ch is not declared to a random character..*/
             fclose(view_ac);
             printf("--------------------------------------------------------------------------------------");
