@@ -1,0 +1,984 @@
+
+    
+    
+ #include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+#include<time.h>
+//when system reinstalled the password is 0.
+
+/*  what my own defined funtions  really do---
+            go2();     --- return to the main menu,
+            invalid_option_wait(); ---wait until input,
+            wacont();--getch();si,ilar function with text diplayed,
+            mainmenu();---only display the main menu,*/
+  
+  /* GOTO options
+         fmainmenu;-- switching the main menu options
+         restart_from_menu;--- as the caling function means itself,
+                                        (start from begining without having to login)
+         system_revoke;--- ask if to exit the system completely.
+  */
+
+void headerz();
+void wacont() ;
+void  end_fd_display();
+void invalid_option_wait();
+void mainmenu();
+void go2();
+void fd_cal();
+ 
+void print_time();
+void print_time_without_tab();
+	
+
+int main()
+ {int latestpass;//to be a global variable
+ 	 restart:
+   { 
+    
+
+	        headerz();
+        	printf("\t\t\t          Bank of Kailash\n "); 
+        	printf("\t\t\t         Unionstr Branch 101\n");
+        	
+        	print_time();// my defined function..
+        	
+        
+        	
+                     int UserID;int tries;int Ex=0;
+                     
+           		
+		for (tries=0; tries < 3 ; tries++)
+           {
+    
+			
+                  	printf("\n\n\n");
+            		printf("       Please enter the User ID   : LK0"); 
+					scanf("%d", &UserID); 
+					        FILE*new_password=fopen("new_pass.txt","r");
+			  	            fscanf(new_password,"%d",&latestpass);
+			  	            fclose(new_password);
+			  	            
+			  	          /*
+							  int len_latestpass=1;
+							  while(1)
+							  {
+							       if(len_latestpass==0)
+							          {
+							             break;}
+							  
+							  	latestpass/=10;
+							  	len_latestpass++;
+							
+							  	
+							  }
+							  
+							  FILE*read_new_password=fopen("new_pass.txt","r");
+			  	            fscanf(read_new_password,"%d",&latestpass);
+			  	            fclose(read_new_password);
+			  	            
+			  	           */
+			  	            
+			  	            if (latestpass==0)
+			  	                {
+			  	                      	printf("\n\tWelcome to the AS/400 system.\n\tPlease assign a new password for the security of the login of your system.");
+						             	tries=5;
+							            getch();
+							            
+				 	            }
+				 	            
+				 	            char password[12];
+           			printf("       Please enter the Password  : ");
+           			
+					    
+					char ch;
+					int i;
+					for(i=0; ;i++)
+					{
+						ch=getch();
+						   if(ch==13)
+						   break;
+						   else if(ch==8)
+						   printf("\b");
+						password[i]=ch;
+						ch='*';
+							printf("%c",ch);
+					}
+					headerz();	
+
+				int password_int;
+				password_int=atoi(password);     /////converting a string into an integer
+         	
+			    if( password_int==latestpass && UserID == 9743 )
+ 	                 {       
+ 	       					headerz();
+     						tries=5;
+	                 }   
+		        else
+	                {
+	         	
+ 	  	                    printf("\n\n\tCombination of User ID and Password entered wrongly \n\n");
+ 	  	                    printf("\tPlease recheck your User ID and Password.\n\n ");
+ 	  	                    Ex++ ;
+ 	  	                           
+ 	  	                        if( Ex >= 3)
+                                   {
+		                             printf("\t   Login attempts reached !!System terminating\n\n\n\n ");
+			                         tries=5;return 0;
+		                           }
+                	}
+            }
+
+  restart_from_menu:
+  {
+			      	
+              int l;
+    for (l =0 ; l=15;  l++)
+    {
+	 
+        mainmenu();  //the function main menu being called here:
+        
+        //defining the switch function.
+	fmainmenu:
+        	{
+			
+              int o;// the options to be selected;
+              scanf("%d", &o);
+    
+/*	while(1)
+	{ if(o == 10)         //if no option is entered/ only enter key pressed screen does not go down//returns to menu funtion
+          {
+	        getch();
+            goto fmainmenu;
+          }
+    } */
+                printf("\n");
+    
+    
+switch (o)
+{
+
+case 1:
+	
+{
+	
+	headerz();
+	printf("\n \t\t\t Opening Savings A/C Menu\n");
+	printf("\t\t\t *************************\n\n");
+	printf("\n\n\n Are you sure to want to open a new Savings Account?\n\t\t\t \tpress '100' to continue:");
+
+	int conf;
+	scanf("%d",&conf);
+	if(conf == 100)
+	{
+     	goto ACin;
+     	
+	}
+	else
+	{
+   	    goto restart_from_menu;
+   	    
+	}
+	
+	ACin:
+		{
+		
+	headerz();
+	printf(" \t\t\t Opening Savings A/C Menu\n");
+	printf("\t\t\t *************************\n\n");
+	
+	char index[11];
+	printf("\tEnter a new 10 digit AC No from Index file : ");
+	scanf("%s",index);
+	
+   FILE * existing_ac_no=fopen(index,"r");
+    if (existing_ac_no!=NULL)
+        {
+	        printf("\a\n      \n\tIndex already used and an AC already exists,Please use a new Index\n");
+	        printf("\n\n\a\t Please note that the AC No for savings AC starts with 8;\n\t            for ex: 8060115406\n\n             User ID- LK09743 logged in.\n\n        ***********************************************************");
+	        getch();
+            goto ACin;
+        }
+  fclose(existing_ac_no);
+	// index is the user input value
+	 
+	  FILE * CIF= fopen(index,"w");
+if(CIF==NULL)
+{
+printf("cannot be done");
+getch();
+}
+    printf("\n\t\tDate of opening AC        : ");   print_time_without_tab();/* my defined function*/ 
+	char NIC[10];
+	printf("\n\t\tEnter NIC No here         : ");
+	scanf("%s", &NIC);
+	
+	fprintf(CIF,"\n    NIC No       : %s",NIC);
+  
+
+    char first_name[15];
+    char family_name[15];
+    printf("\n\t\tEnter the first name      : ");
+    scanf("%s",first_name);
+    printf("\n\t\tEnter the family name     : ");
+    scanf("%s",family_name);
+    char space[]=" ";
+	strcat(family_name,space);
+	strcat(family_name,first_name);
+	fprintf(CIF,"\n    Full Name    : %s",family_name);    
+   
+    char house_no[25];
+    printf("\n\t\tEnter the House No        : ");
+    scanf("%s",house_no);
+    fprintf(CIF,"\n    Adress       : %s",house_no);
+    
+    char Address[25];
+    printf("\t\tEnter the Street Name     : ");
+    scanf("%s",Address);
+    fprintf(CIF,", %s",Address);
+    char dob[10];   
+    printf("\n\t\tEnter the DOB             : ");
+    scanf("%s",dob);
+    fprintf(CIF,"\n    Date of Birth: %s\n",dob);
+	printf("\n  \t AC opened successfully and saved, \n\t\tto view the account goto Main Menu and select option No 2.");
+		rewind(CIF);
+	               fclose(CIF); 
+                   getch();
+                   
+            break;	
+        }
+}
+
+
+case 2:// o stands for option..
+ {          startcase2:
+ 	   {
+	 
+                      headerz();
+                      char ch;
+                      char ac_no[10];
+                      printf("\t\t\t View Savings Account\n\t\t\t  *****************\n");
+                      printf("---------------------------------------------------------------------------------------");
+
+                      printf("\n      Enter the AC no       : ");
+                      scanf("%s",ac_no);
+                      system ("cls");
+                      headerz();
+
+                      printf("\t\t\t View Savings Account\n\t\t\t  *****************\n");
+                      printf(" --------------------------------------------------------------------------------------");
+
+                      printf("\n        Account No     : %s",ac_no);
+                     
+                      FILE *view_ac;
+                      view_ac=fopen(ac_no,"r");
+                      
+                           if(view_ac==NULL)
+                              {   headerz();
+                                  int try_again;
+                                  printf("\a\nThe account number you entered does not exist.Try agin");
+                                  printf("\nPress 15 to view AC again or any other key to return to main screen.");
+                                  scanf("%d",&try_again);
+                                    if (try_again==15)
+                                          {
+                                          	goto startcase2;
+        	                            	}
+	                              	else
+	                                  	{goto restart_from_menu;
+	                                   	}
+                              }
+                              
+                        while(1)
+                      { 
+                                 if (ch==EOF)
+                                   {break;}
+   
+                            ch=fgetc(view_ac);
+                            printf("%c",ch);
+                      }
+            ch='o';   /*this ch is assigned temporarily to some random character,so that ch does not contain the value of EOF,  if not declared like this the loop works only once, for the second time breaks
+			             automatically,because the value of ch would be EOF from the first loop,if ch is not declared to a random character..*/
+            fclose(view_ac);
+            printf("--------------------------------------------------------------------------------------");
+            printf("\n    \t\t\t\t\tThe AC Data is not editable in this screen.\n\n\n\n\n\n\t To edit customer data use option '9'from main menu.\n");
+            printf("\t\t\t\t\tcontinue : ");getch();
+        }}
+		break;
+
+
+
+
+case 3 ... 4 :
+	{ 	headerz();
+        printf(" \t\t  Open new fixed deposit Account \n");
+        printf(" \t\t  ****************************** \n\n\n\n");
+        printf ("      \t\t\t    option not found or not yet coded\n \n");
+     
+     int z;//for screen to be held untill user input;; 
+         printf("           Press 1 to continue : ");
+         scanf("%d",&z);
+         go2();
+         break;
+   }
+   
+ 
+  //ingnore for now
+  /*AC:
+	
+		       	headerz();
+		        system("COLOR 0F");
+                printf("\n\t\t\tView Savings Account Menu \n");system("COLOR 03");
+                printf("\t\t\t  ----------------------\n\n\n\n");
+                printf("   Enter Savings A/C no or NIC no :\n \t\t\t        ==> ");
+      
+     	
+long long int A;
+scanf("%lld",&A);
+
+
+         if( A == 8060115406 || A==980863930  )
+{
+    
+ 
+ printf("\n");
+ 
+ 
+	
+
+    system("COLOR 0F");
+    	headerz();    
+	printf("\n\n\t\t\t\tSavings A/C \n\n\n\n NIC NO : %lldV",A);
+printf(" \n Name  : Navaratnarajah Nirojan\n Address : union str 12\n     \t   Lippstadt\n      \t   deutschland\n A/C bal : $84466\n NIC no  : 980863930v");
+go2();
+
+    
+}
+
+
+	
+
+
+
+          else if (A == 8006007990)
+ {
+	printf(" A/C no  : 8006007990\n Name      : Navaratnarajah Sivaranjini\n Address : Manipay Road\n     \t   Jaffna\n      \t   Sri Lanka\n A/C bal : Rs. 100456,23\n NIC no  : 745698236v");
+
+
+   go2();   // returning to the main menu.............
+
+}
+else if(A!=8060115406 || A!=8006007990 || A!=980863930 )
+{ 
+
+printf("       \a\a\a\a ****No A/C available int this A/C No .\n\n");
+    wait();
+	go2();
+	}
+	break;
+	
+}*/
+
+
+case 5:
+{	headerz();
+
+printf("\n   Option selected for system termination\n\n\n\n \a ");
+goto system_revoke;
+
+system_revoke:
+{
+int Conf;//Confirmation//////::::;;;;;;;
+printf("\n\n\n\n\n             Do you really want to Exit System?\n   \t\tpress 1 to exit or 5 to revoke :\n\t\t\t\t\t     ==>");
+scanf("%d",&Conf);
+if(Conf == 1)
+{	headerz();
+
+goto restart;
+}
+else if (Conf ==5)
+
+{	headerz();
+
+mainmenu();
+goto fmainmenu;
+
+}
+else 
+{	headerz();
+
+printf("\t \n Invalid option entered.\a");
+goto system_revoke;
+}
+}
+break;
+
+}
+
+case 6:
+{     fd_cal();
+break;
+
+}
+
+ case 7:
+   	headerz();
+    printf("\n\n\n     1 Month (LKR)	5.500	5.500	5.640	5.640	25,000.00\n     2 Months (LKR)	5.500	5.500	5.630	5.630	25,000.00\n     3 Months (LKR)	6.000	6.000	6.140	6.140	25,000.00\n     6 Months (LKR)	6.500	6.500	6.610	6.610	25,000.00\n\n\n");               
+               
+              
+    end_fd_display();
+	
+   	break;
+	
+		case 8:
+{
+	          headerz();
+	          int old_pass;
+              
+              printf("\t\t\t\tChange Password");
+              printf("\n\t\t\t\t***************\n\n");
+              
+                int conf_pass_chng;
+			printf("    If you are sure to want to change the password please press '100',\n\tor else any other key to return to main menu :");
+			  scanf("%d",&conf_pass_chng);
+	 if(conf_pass_chng==100)
+	    {
+
+
+              int counter;
+              if(latestpass==0)
+              {printf("\n \n Please note the following :\n\t\tBe sure that you do remember the password that you set now,\n\t\tand please do not share your password with anyone.\n\n\tDuring te time of system login you get only three chances to login\n\tIncase the entered passsword does not match for 3 tries,\n\t\tthe system terminates automatically.");
+			     getch();
+				 goto change_password;
+			  }
+              for(counter=0; counter<3; counter++)
+              {
+	            		  
+                 printf("\n\tPlease enter the old Password :");
+                 scanf("%d",&old_pass);
+                 
+                
+                if(old_pass==latestpass)     //*******latestpass is declared at the top of main to be a global variale.
+                   break;
+                   
+                else
+				   {      if(counter==0)
+				         {
+				   
+				            printf("\a        The entered password does not match the existing password,try again.\n\t        You have only 2 more tries!");
+				             
+			             }
+				   
+				         else if(counter==1)
+				         {
+				         	 printf("\a              Password does not match the existing password again,try again.\n\t        You have only 1 more try!");
+                             
+						 }
+				         else if(counter==2)
+				         {
+				         	printf("\a               Password does not match the existing password anymore.\n\t        You have no more tries!");
+                            printf("\n\t\tAccess denied,System will to be terminated now!!");getch();   getch();                         
+	            			  
+	            			  goto restart;
+						 }
+				               
+				   }
+				    
+              }
+              
+	         
+       }
+   else
+	{
+	  goto restart_from_menu;
+	}
+}
+              
+change_password:
+    {
+				     	
+              int conf;
+              
+              printf("\n           Are you sure to want to change Login Password? \n\t\t\tPress '100' to confirm: ");
+              scanf("%d",&conf);
+              if(conf==100)
+              {  int new_pass;
+                 FILE * new_password=fopen("new_pass.txt","w+");
+
+			            printf("\n\tPlease enter new password only in digits \n  (\aif your new password contains any letter,the system crashes!!!):");
+                        scanf("%d",&new_pass);
+                        fprintf(new_password,"%d",new_pass);
+              	 
+              	fclose(new_password);
+
+			
+			     printf("\n\n\t                 Password changed successfully..!\n\n \t\t\t\t\t\tReturn to Main Menu:");
+                 getch();
+                 
+                 mainmenu();
+			     goto fmainmenu;
+              }
+              
+                 else
+              
+                  {
+				      mainmenu();
+			          goto fmainmenu;
+			      }
+	}
+              
+              
+             
+
+	 break;
+		
+		
+		
+		
+case 9:{
+	
+
+	start_case_9:
+{
+       system ("cls");
+		headerz();
+   int choice;
+   
+   printf("\n\t\t\t\tACCOUNT NUMBER AMMENDMENT\n\n\n   Select one of the following \n\t1.Change AC Data\n\t2.Change the AC Number\n\n\t\tEnter the option here==> ");
+   
+   scanf("%d",&choice);
+   if (choice==1)
+   {
+   
+     {
+	   char read_ac_no[12];
+	printf("\n\tPlease enter the AC No to append : ");	
+    scanf("%s",read_ac_no);
+    system ("cls");
+    headerz();
+    printf("The AC No for which the details are desired to be edited : %s\n",read_ac_no);
+    
+    
+     	FILE * check_if_file_exists;
+     	check_if_file_exists=fopen(read_ac_no,"r");
+
+		 if(check_if_file_exists==NULL)
+		 {
+		 	printf("\n\tThe AC No you enetered does not exist!\n\t Please enter a valid AC No and try again. ");
+		 	getch();
+		 	int conf_e;
+		 	printf("\n   To try again press '100' or to exit press '15':");
+		 	scanf("%d",&conf_e);
+		 	switch(conf_e)
+		 	{
+			   case 100:
+		 	          goto start_case_9;
+		 	      break;
+		 	   case 15:
+		 	     	goto restart_from_menu;
+		 	      break;
+		 	   default:
+		 			printf("\tThe option you entered is not valid.");
+		 			getch();
+					 printf("\n\t \aSystem returning automatically to the Main Menu. ");
+		 			getch();
+		 				goto restart_from_menu;
+		 		  break;
+		 				
+			 }   
+		}
+                 
+	else if (check_if_file_exists!=NULL)	
+{
+
+	FILE * display_existing_details;
+	display_existing_details=fopen(read_ac_no,"r");
+			 printf("\n\tThe existing details are as follows, \n\tPlease enter all the details again in order to update the customer data file\n");
+			 char ch;
+			 printf("     Existing details : \n");
+			    while(1)
+                      { 
+                                 if (ch==EOF)
+                                   {break;}
+   
+                            ch=fgetc(display_existing_details);
+                            printf("%c",ch);
+                      }
+            ch='o';
+			printf("\t\t\t\t\t");getch();printf("\n");
+			
+			//again opening the file to update the file with the new cutomer data.	
+			fclose(display_existing_details);
+			fclose(check_if_file_exists);
+			FILE *change_data;
+			change_data=fopen(read_ac_no,"w+");
+			
+					 printf("Now enter the details to update in the system.\n");
+			 
+			 char NIC[10];
+	printf("\n\t\tEnter NIC No here         : ");
+	scanf("%s", &NIC);
+	
+	fprintf(change_data,"\n\tNIC No         : %s",NIC);
+  
+  
+  
+    char first_name[15];
+    printf("\n\t\tEnter the first name      : ");
+    scanf("%s",first_name); 
+    fprintf(change_data,"\n\tFirst Name     : %s",first_name);
+    
+    char house_no[25];
+    printf("\n\t\tEnter the House No        : ");
+    scanf("%s",house_no);
+    fprintf(change_data,"\n\tAdress         : %s",house_no);
+    
+    char Address[25];
+    printf("\t\tEnter the Street Name       : ");
+    scanf("%s",Address);
+    fprintf(change_data,"   , %s",Address);
+    char dob[10];   
+    printf("\n\t\tEnter the DOB             : ");
+    scanf("%s",dob);
+    fprintf(change_data,"\n\tDate of Birth  : %s\n",dob);
+	printf("\n  \t AC details updated successfully and saved, \n\t\tto view the account goto Main Menu and select option No 2.");
+			 	getch();		 
+		fclose(change_data);	 
+}}}
+
+else if(choice==2)
+{
+	
+	system("cls");
+	headerz();
+	char old_ac_no[12];
+	char new_ac_no[12];
+	printf("\n\tEnter the AC No to be changed :");
+	scanf("%s",old_ac_no);
+	
+	printf("\n\tEnter the new AC No           :");
+	scanf("%s",new_ac_no);
+	
+	int rename_status;
+	rename_status=rename(old_ac_no,new_ac_no);
+	if (rename_status==0)
+	{
+		printf("\n\t The AC No has been changed successfully");
+		getch();
+		
+	}
+	else{printf("Error in changing the AC No.");
+getch();	goto restart_from_menu;
+	}
+	
+	
+	
+	
+	
+	
+	
+}
+
+
+
+
+
+}}break;
+    
+    
+
+
+
+ case 10:
+    	{
+    	 headerz();
+    	  // just for fun ,actually no reason or funtion in askiing the reason for closing the account.
+    	
+    	 printf("Enter the AC No to be closed : ");
+    	 char close_no[12];
+    	 scanf("%s",close_no);
+    	 
+    	 FILE * fp;
+    	 fp=fopen(close_no,"r");
+    	 if(fp==NULL)
+    	 {printf("\n\a    The AC No you entered does not exist.");
+    	 getch();}
+    	 
+    	 else{
+    	 char reason[30];
+    	 printf("\n Reason for closing the Savings AC:\n\t1.Insufficient funds in AC\n\t2.Customers personal wish\n\t3.Customer not eligible to hold an AC in this bank.\n\t4.Other...\n\t          ==> ");
+    	 scanf("%s",reason);
+    	 printf("\n\tPlease confirm if this is the correct AC to be close :\n");
+    	 
+    	 
+		 system ("cls");
+		 headerz();
+		 printf("\t\t\t\tClose Savings Account\n\t\t\t\t**********************\n\n");
+		 printf("   AC to be closed : %s",close_no);
+           
+		   char ch;
+ 
+             while(1){
+                 	ch=fgetc(fp);
+               if (ch==EOF)
+	               break;
+	            printf("%c",ch)  ;
+	            ch='o';   // a random character is assigned so that ch does not contain the value of EOF...
+  
+                     }
+           	fclose(fp);
+		       	  printf("\n\tAre you sure to want to permanently close the AC?\n\t    press 100 to confirm or 15 to return to main menu : ");
+		       	  int conf;
+		       	  scanf("%d",&conf);
+		       	  if(conf==100)
+		       	  {
+					 
+    	 int status;
+    	 
+    	 status=remove(close_no);
+    	 if(status==0)
+		 {printf("\n\tThe AC has been successfully closed and Data is deleted.");getch();
+		 }
+		 else{printf("The AC No you entered does either not exist or has been already closed. ");getch();
+		 }
+	}
+                  	else {
+                  		
+                  	goto restart_from_menu;
+					  }
+					  
+	
+	
+	
+	}
+		 break;
+		}
+	
+   
+
+   
+  
+   
+
+
+   		
+   default:
+   	
+   	
+	    
+	    printf ("\a       Invalid option. Try again ==>");
+	    getch();
+       break;
+ goto fmainmenu;   	
+	
+}
+} 
+}
+
+      
+return 0;
+}}
+}
+  
+
+  void headerz()
+{
+		system ("cls");
+	printf("\n  AS/400.\t\t \t\t\t \t\t\tTERMINAL 01\n\n ");
+}
+  
+void wacont() //wait for any input then continue:
+{
+	printf("\tPress any number to continue :");
+	getch();
+	
+	}
+void  end_fd_display()
+{printf("\n\n\n     FD Rates are revised every month,\n     Rates for Existing  Accounts remain same as at the opening  until maturity\t\t\n \tScreen Exits Automatically \n\n\n");
+	
+	printf("\tPress any number to continue :");
+	getch();
+}
+
+void invalid_option_wait()
+{printf(" Invalid option selected,try again.\n");
+	
+	printf("\t        Press any number to continue :");
+	getch();
+}
+void mainmenu()
+{
+	system("cls");
+	system ("cls");
+		printf("\t\t\t          Bank of Kailash \n\n\n "); 
+        	printf("\t\t\t        Unionstr Branch 101\n\n\n");
+	printf("\n  AS/400.\t\t \t\t\t \t\t\tTERMINAL 01\n\n ");
+	printf(" \t\t\t \t   MAIN MENU\n ");
+printf(" \t\t\t\t****************\n\n");
+
+           print_time(); //my defined function.
+	
+	printf("  Select one of the following: \n\n");
+	 
+printf("          1.  Open a savings account\n");
+printf("          2.  Display savings account\n");
+printf("          3.  Open new fixed deposit Account \n");
+printf("          4.  View existing fixed deposit accounts\n");
+printf("          6.  Calculate fixed deposit interests\n");
+printf("          7.  View FD Interest Rates\n");
+printf("          8.  Change system Password.\n");
+printf("          9.  Change Customer Data (CIF)\n");
+printf("         10   Close Savings AC \n\n");
+
+printf("          5.  Exit AS/400.\t\t\t\t\t5-SIGN OFF\n");
+printf("          ....................................................................\n");
+printf("                           Enter the option here:");
+
+
+
+}
+
+
+
+void go2()
+	
+{int g;
+		printf("\n\n\nTo return to the MAIN MENU press\'15\' or to exit the system press\'5\' :   ");
+		printf("\t  \t\t \t\t\t\t\t\t\t\t   ==>");scanf("%d", &g);
+		system("COLOR 03");
+	if(g== 5)
+		{	headerz();
+		printf("\n\n    Please Exit via the Main Menu ,System is being coded for this option.");
+		go2();
+		}
+	else if(g == 15)
+	{    mainmenu();
+	}
+	
+else{	
+          headerz();
+          printf("\n\n\tInvalid Option selected=>");
+          go2();
+	  }	  
+}
+
+
+
+
+
+
+void fd_cal()
+{
+	
+	headerz();
+long long int deposit_amount;
+float int_rate;
+int option ;
+int age;
+system ("cls");
+	printf("\n  AS/400.\t\t \t\t\t \t\t\tTERMINAL 01\n\n ");
+     printf("\n\t\n\t\t Calculate the Interest earned Menu\n");
+     printf("\t\t**************************************\n\n\n\n");
+	
+     
+	printf (" \t    2.5%%  of the interest earned automatically deducted \n \t         as income tax,except for Senior citizens (AGE>60 yrs).\n \n\n");
+   
+    
+    printf("Options : \n");
+	printf ("         1.     1 yr maturity interest trf\n         2.     1 yr monthly interest trf\n\n\n ");
+	printf("        Please enter the Age : ");scanf("%d",&age);
+	printf("                  Option :  "); scanf("%d",&option);
+	if( option == 1 || option == 2)
+	{
+	goto cont;
+	} else if (option != 1 || option != 2)
+	{printf("\n  Invalid option selected,try again.\n");
+        invalid_option_wait();
+    	fd_cal();
+	}
+	cont:
+		{
+		
+	printf("        \n Amount to be deposited Rs. :  ");scanf("%lld",&deposit_amount);
+	
+	if(option ==1 && age<60 )
+	{printf("2.5%% TAX applies\n");
+	printf("1 yr maturity interest rate = 10.5%% p.a\n");
+	
+	int_rate= 0.105;
+	float interest_earned= ((deposit_amount * int_rate)-(0.025 * deposit_amount));
+	printf("\n\nInterest earned at the end of year (with TAX)= Rs.  %.3lf ",interest_earned);
+	go2();
+		}
+	
+	else if (option ==1 && age>60 )
+	{
+	printf("1 yr maturity interest rate = 10.5%% p.a\n\n");
+	printf("NO TAX applied to this customer\n");
+	
+	int_rate= 0.105;
+	float interest_earned= (deposit_amount * int_rate);
+	printf("\n\nInterest earned at the end of year = %.3lf ",interest_earned);
+	go2();
+		
+}
+else if(option == 2&& age<60 )
+	{printf("2.5%% TAX applies");
+	printf("1 yr maturity interest rate = 10.5%% p.a\n");
+	
+	int_rate= 0.105f;
+
+
+
+
+	float interest_earned= ((deposit_amount * int_rate)-(0.025 * deposit_amount));
+	
+		printf(" \n\n Interest earned every month (with TAX)= Rs.  %.3lf ",interest_earned/12);
+		go2();
+
+	}
+		else if (option == 2 && age>60 )
+	{	printf(" NO TAX applied to this customer\n");
+	printf(" 1 yr maturity interest rate = 10.5%% p.a");
+	
+	int_rate= 0.105;
+	float interest_earned= (deposit_amount * int_rate);
+	printf("\n\n Interest earned every month (NO TAX) = %.3lf ",interest_earned/12);
+	go2();
+	}
+	
+	else if(option !=1 || option !=2)
+	{
+		printf("option selected not in list,try again! ");
+		fd_cal();
+		}
+	}	
+}
+
+void print_time(){
+	
+	
+		time_t currentTime;
+	time(&currentTime);
+	
+	printf("\t\t\t\t\t\t\t    %s",ctime(&currentTime));
+}
+
+
+void print_time_without_tab(){
+	
+	
+		time_t currentTime;
+	time(&currentTime);
+	
+	printf("%s",ctime(&currentTime));
+}
+
+
+
+
+
+
+
+
