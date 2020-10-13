@@ -10,7 +10,7 @@
 
 /*  what my own defined funtions  really do---
             go2();     --- return to the main menu,
-            invalid_option_wait(); ---wait until input,
+            invalid_option_wait(); ---wait until input(any character entered from the user),
             wacont();--getch();si,ilar function with text diplayed,
             mainmenu();---only display the main menu,*/
   
