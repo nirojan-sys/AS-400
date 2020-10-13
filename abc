@@ -8,7 +8,7 @@
 #include<time.h>
 //when system reinstalled the password is 0.
 
-/*  what my own defined funtions  really do---
+/*  what my own defined funtions  really dofine:
             go2();     --- return to the main menu,
             invalid_option_wait(); ---wait until input,
             wacont();--getch();si,ilar function with text diplayed,
